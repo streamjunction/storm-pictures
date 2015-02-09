@@ -1,0 +1,39 @@
+extends base
+// === stylesheets block ===
+// === End stylesheets block ===
+
+
+// === Content block ===
+
+block content
+
+  .container(ng-app="instagramDemo")
+    .row(ng-controller="InstagramDemoController as ctl")
+      div(gm-info-window="infoWindow")
+        ul.list-unstyled
+          li(ng-repeat="i in lines(selectedCluster)")
+            ul.list-inline
+              li(ng-repeat="j in columns(i, selectedCluster)", style="padding: 0")
+                a(ng-href="{{image(i, j, selectedCluster)}}")
+                  img.demo-thumbnail(ng-src="{{image(i, j, selectedCluster)}}media/?size=t")
+      .col-md-12
+        .row
+          .col-md-12
+            .map
+              // Google Map  
+              gm-map.map.margin-bottom-40(gm-map-id="'demo-map'", gm-map-options="options.map")
+                gm-markers(gm-id="object.id", gm-objects="markers",gm-position="{lat: object.location.lat, lng: object.location.lng}",gm-marker-options="{ clickable: true }",gm-events="markerEvents",gm-on-click="triggerOpenInfoWindow(object)",gm-on-openinfowindow="onOpenInfoWindow(object, marker)")
+        .row
+          .col-md-12
+            p Clusters: {{markers.length}}
+        .row
+          .col-md-12
+            .slider
+              div(ui-slider,min="1",max="6",ng-model="minSize")
+            
+// === Scripts Block ===
+block scripts
+    script(src="/static/external/angular-gm.min.js")
+    script(src="/static/external/slider.js")
+    script(src="/static/js/demo.js")
+    
